@@ -1,5 +1,6 @@
 package com.lucas.gerenciamento_projetos.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.el.stream.Optional;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lucas.gerenciamento_projetos.dto.ProjetoDto;
 import com.lucas.gerenciamento_projetos.model.entity.Projeto;
 import com.lucas.gerenciamento_projetos.repository.ProjetoRepository;
 
@@ -26,9 +28,12 @@ public class ProjetoController {
 
 
     @PostMapping
-    public ResponseEntity<Projeto> creatProject(@RequestBody Projeto projeto){
-        Projeto newProject = projetoRepository.save(projeto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newProject);
+    public ResponseEntity<ProjetoDto> creatProject(@RequestBody Projeto projeto){
+        projeto.setDataCriacao(LocalDateTime.now());
+        projeto.setDataTermino(LocalDateTime.now());
+        Projeto newProjectSaved = projetoRepository.save(projeto);
+        ProjetoDto newProjectDto = ProjetoDto.convertToProjeto(newProjectSaved);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newProjectDto);
     }
 
     @GetMapping
@@ -36,12 +41,12 @@ public class ProjetoController {
         return projetoRepository.findAll();
     }
 
-    @GetMapping("/{id}")
+    /*@GetMapping("/{id}")
     public ResponseEntity<Projeto> getProjectById(@PathVariable Long id){
          return projetoRepository.findById(id).map(projeto -> ResponseEntity.ok(projeto)).orElseGet(() -> ResponseEntity.notFound().build());
          //return projetoRepository.findById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());  --> OS LAMBDA!!!
 
-        }
+        }*/
         
 
 

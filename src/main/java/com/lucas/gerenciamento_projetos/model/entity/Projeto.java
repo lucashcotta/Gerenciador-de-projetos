@@ -2,6 +2,7 @@ package com.lucas.gerenciamento_projetos.model.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,7 +11,10 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 
+@Entity
 @Getter
 @Setter
 public class Projeto {
@@ -26,10 +30,12 @@ public class Projeto {
     private String descricao;
 
     @Column(name = "DATA_CRIACAO", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDateTime dataCriacao;
     
     
-    @Column(name = "DATA_Termino", nullable = false)
+    @Column(name = "DATA_Termino")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDateTime dataTermino;
 
 
