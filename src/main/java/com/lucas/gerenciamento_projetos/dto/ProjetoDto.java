@@ -27,9 +27,9 @@ public class ProjetoDto {
 
     public static ProjetoDto convertToProjeto(Projeto projeto){
         ProjetoDto projetoDto = new ProjetoDto();
-        projeto.setTitulo(projeto.getTitulo());
-        projeto.setDescricao(projeto.getDescricao());
-        projeto.setDataCriacao(projeto.getDataCriacao());
+        projetoDto.setTitulo(projeto.getTitulo());
+        projetoDto.setDescricao(projeto.getDescricao());
+        projetoDto.setDataCriacao(projeto.getDataCriacao());
 
         return projetoDto;
     }   

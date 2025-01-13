@@ -30,7 +30,7 @@ public class ProjetoController {
     @PostMapping
     public ResponseEntity<ProjetoDto> creatProject(@RequestBody Projeto projeto){
         projeto.setDataCriacao(LocalDateTime.now());
-        projeto.setDataTermino(LocalDateTime.now());
+        //projeto.setDataTermino(LocalDateTime.now());
         Projeto newProjectSaved = projetoRepository.save(projeto);
         ProjetoDto newProjectDto = ProjetoDto.convertToProjeto(newProjectSaved);
         return ResponseEntity.status(HttpStatus.CREATED).body(newProjectDto);
@@ -41,12 +41,12 @@ public class ProjetoController {
         return projetoRepository.findAll();
     }
 
-    /*@GetMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Projeto> getProjectById(@PathVariable Long id){
          return projetoRepository.findById(id).map(projeto -> ResponseEntity.ok(projeto)).orElseGet(() -> ResponseEntity.notFound().build());
          //return projetoRepository.findById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());  --> OS LAMBDA!!!
 
-        }*/
+        }
         
 
 
