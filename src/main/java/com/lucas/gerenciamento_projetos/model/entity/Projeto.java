@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 
 @Entity
@@ -42,6 +45,7 @@ public class Projeto {
     /*MappedBY -> Diz ao JPA que a relação já está mapeada pelo atributo project na classe Tarefa */
     /*casdade -> Caso o projeto sofra alteração, as tarefas relacionadas a ele tambem sofrerão */
     /*orphanRemoval -> Caso o projeto seja excluido, as tarefas relacionadas a ele tambem serão */
+    @JsonManagedReference
     @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tarefa> tarefas;
 

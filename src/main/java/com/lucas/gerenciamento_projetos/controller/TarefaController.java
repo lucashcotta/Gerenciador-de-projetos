@@ -1,18 +1,59 @@
 package com.lucas.gerenciamento_projetos.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lucas.gerenciamento_projetos.dto.TarefaDto;
+import com.lucas.gerenciamento_projetos.model.entity.Tarefa;
 import com.lucas.gerenciamento_projetos.repository.TarefaRepository;
 
 
 @RestController
-@RequestMapping("/contato")
+@RequestMapping("/tarefa")
 public class TarefaController {
     @Autowired
-    private TarefaRepository TarefaRepository;
+    private TarefaRepository tarefaRepository;
+
+    @PostMapping
+    public ResponseEntity<TarefaDto> creatTarefa(@RequestBody Tarefa tarefa){
+        tarefa.setDataCriacao(LocalDateTime.now());
+        Tarefa tarefaSalva = tarefaRepository.save(tarefa);
+        TarefaDto tarefaDto = TarefaDto.convertToTarefaDto(tarefaSalva);
+        return ResponseEntity.status(HttpStatus.CREATED).body(tarefaDto);
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TarefaDto> getTarefa(@PathVariable Long id){
+
+        Tarefa getTarefa = tarefaRepository.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
+        TarefaDto tarefaDto = TarefaDto.convertToTarefaDto(getTarefa);
+        return ResponseEntity.status(HttpStatus.OK).body(tarefaDto);
+
+        //return tarefaRepository.findById(id).map(tarefa -> ResponseEntity.ok(tarefa)).orElseGet(() -> ResponseEntity.notFound().build());
+    
+    }
+    @PostMapping("/{id}/status")
+    public ResponseEntity<TarefaDto> attStatus(@PathVariable Long id, @RequestBody Tarefa tarefaAtt ){
+        return tarefaRepository.findById(id).map(tarefaExistente -> {
+            tarefaExistente.setTaskStatus(tarefaAtt.getTaskStatus());
+            Tarefa tarefaSalva = tarefaRepository.save(tarefaExistente);
+            return ResponseEntity.ok(TarefaDto.convertToTarefaDto(tarefaSalva));
+        }).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+
+    }
 
 
 
