@@ -12,20 +12,6 @@ services:
     volumes:
       - 'postgres-data:/var/lib/postgresql/data'
     restart: 'unless-stopped'
-
-  app:
-    build: .
-    container_name: my-api
-    restart: always
-    depends_on:
-      - postgres
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/springdb
-      SPRING_DATASOURCE_USERNAME: springuser
-      SPRING_DATASOURCE_PASSWORD: springpassword
-    ports:
-      - "8080:8080"
-
 volumes:
   postgres-data:
 

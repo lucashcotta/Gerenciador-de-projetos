@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lucas.gerenciamento_projetos.dto.ProjetoDto;
+import com.lucas.gerenciamento_projetos.enums.ProjectStatus;
 import com.lucas.gerenciamento_projetos.model.entity.Projeto;
 import com.lucas.gerenciamento_projetos.repository.ProjetoRepository;
 
@@ -51,6 +52,14 @@ public class ProjetoController {
     public List<Projeto> getAllProjects(){
         return projetoRepository.findAll();
     }
+
+    @GetMapping("/status/{projectStatus}")
+    public ResponseEntity<Projeto> statusFilter(@PathVariable ProjectStatus projectStatus){
+        List<Projeto> projetos = projetoRepository.findByProjectStatus(projectStatus);
+        projetos.add(projetoRepository.findByProjectStatus(projectStatus));
+        return projetos;
+    }
+    
 
     @GetMapping("/{id}")
     public ResponseEntity<Projeto> getProjectById(@PathVariable Long id){
