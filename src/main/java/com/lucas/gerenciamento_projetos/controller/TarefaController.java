@@ -2,11 +2,13 @@ package com.lucas.gerenciamento_projetos.controller;
 
 import java.time.LocalDateTime;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +54,18 @@ public class TarefaController {
             Tarefa tarefaSalva = tarefaRepository.save(tarefaExistente);
             return ResponseEntity.ok(TarefaDto.convertToTarefaDto(tarefaSalva));
         }).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Tarefa> deletaTarefa(@PathVariable long id ){
+        if(tarefaRepository.existsById(id)){
+            tarefaRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
 
     }
 

@@ -3,6 +3,8 @@ package com.lucas.gerenciamento_projetos.model.entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
+import com.lucas.gerenciamento_projetos.enums.ProjectStatus;
 
 @Entity
 @Getter
@@ -36,7 +39,11 @@ public class Projeto {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDateTime dataCriacao;
     
-    
+    @Column(name = "STATUS_PROJECT", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus projectStatus;
+
+
     @Column(name = "DATA_Termino")
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDateTime dataTermino;

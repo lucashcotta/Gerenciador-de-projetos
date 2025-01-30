@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lucas.gerenciamento_projetos.enums.ProjectStatus;
 import com.lucas.gerenciamento_projetos.model.entity.Projeto;
 import com.lucas.gerenciamento_projetos.model.entity.Tarefa;
 
@@ -26,6 +27,7 @@ public class ProjetoDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataCriacao;
     private List<Tarefa> tarefas;
+    private ProjectStatus projectStatus;
 
 
     public static ProjetoDto convertToProjeto(Projeto projeto){
@@ -34,6 +36,7 @@ public class ProjetoDto {
         projetoDto.setDescricao(projeto.getDescricao());
         projetoDto.setDataCriacao(projeto.getDataCriacao());    
         projetoDto.setTarefas(projeto.getTarefas());
+        projetoDto.setProjectStatus(projeto.getProjectStatus());
         return projetoDto;
     }   
 

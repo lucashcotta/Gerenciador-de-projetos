@@ -38,6 +38,14 @@ public class ProjetoController {
         ProjetoDto newProjectDto = ProjetoDto.convertToProjeto(newProjectSaved);
         return ResponseEntity.status(HttpStatus.CREATED).body(newProjectDto);
     }
+    @PostMapping("/{id}/status")
+    public ResponseEntity<ProjetoDto> attStatusProject(@PathVariable Long id, @RequestBody Projeto projetoAtt){
+        return projetoRepository.findById(id).map(projetoExistente -> {
+            projetoExistente.setProjectStatus(projetoAtt.getProjectStatus());
+            Projeto projetoSalvo = projetoRepository.save(projetoExistente);
+            return ResponseEntity.ok(ProjetoDto.convertToProjeto(projetoSalvo));
+        }).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
 
     @GetMapping
     public List<Projeto> getAllProjects(){
